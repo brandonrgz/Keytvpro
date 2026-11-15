@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KEYTV PRO | Panel administrativo</title>
+<style>
+:root{--bg:#090a0d;--panel:#12151b;--panel2:#191e27;--line:#292f3a;--gold:#d6b36a;--gold2:#f0d99c;--txt:#f5f3ee;--muted:#9da5b2;--green:#55c99a;--red:#ef7373;--blue:#8ab7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#22202a 0,#0a0b0f 38%);color:var(--txt);font:14px Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--panel2);color:var(--txt)}button:hover{border-color:var(--gold)}button.primary{background:linear-gradient(135deg,#d9bd7d,#a77b35);color:#17130b;border:0;font-weight:800}button.danger{color:#ffaaaa;border-color:#673b42}.muted{color:var(--muted)}.gold{color:var(--gold2)}
+#login{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{width:min(420px,100%);background:#11141a;border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:0 25px 90px #0009}.brand{font-size:28px;letter-spacing:3px;font-weight:900}.brand span{color:var(--gold)}.eyebrow{color:var(--gold);letter-spacing:2px;font-size:10px;font-weight:800;text-transform:uppercase}
+input,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#0d1015;color:var(--txt);outline:none}input:focus,select:focus{border-color:var(--gold)}label{display:block;color:var(--muted);font-size:12px;margin:12px 0 6px}.hint{font-size:12px;color:var(--muted);line-height:1.5}
+#app{display:none;min-height:100vh}.sidebar{width:240px;position:fixed;inset:0 auto 0 0;background:#0d1015;border-right:1px solid var(--line);padding:24px 16px;display:flex;flex-direction:column;z-index:5}.side-brand{padding:4px 12px 28px}.nav{display:grid;gap:6px}.nav button{text-align:left;background:transparent;border-color:transparent;color:#b8bec8}.nav button.active,.nav button:hover{background:#202029;border-color:#393541;color:var(--gold2)}.nav button span{display:inline-block;width:26px}.side-foot{margin-top:auto;padding:12px;color:var(--muted);font-size:11px}
+main{margin-left:240px;padding:28px;max-width:1600px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:26px}.top h1{margin:4px 0;font-size:25px}.actions{display:flex;gap:8px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:linear-gradient(145deg,#171b23,#11141a);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}.stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:27px;font-weight:800;margin-top:9px}.stat-note{font-size:11px;color:var(--muted);margin-top:5px}.section{margin-top:20px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.section h2{font-size:16px;margin:0}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#11141a}table{width:100%;border-collapse:collapse;min-width:650px}th,td{padding:13px 14px;border-bottom:1px solid #252b35;text-align:left;font-size:12px}th{color:var(--muted);font-weight:600;background:#151922}tr:last-child td{border-bottom:0}.pill{display:inline-block;border-radius:20px;padding:5px 9px;font-size:10px;font-weight:700;background:#242a33;color:#c5cbd5}.pill.active{background:#17382e;color:#8ce0bd}.pill.expired{background:#402328;color:#ffaaaa}.pill.pending{background:#41351e;color:#f0d99c}.empty{text-align:center;color:var(--muted);padding:28px}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar input{max-width:280px}.toolbar select{max-width:180px}.hidden{display:none!important}.two{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}.barline{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #252b35}.modal{position:fixed;inset:0;background:#000a;display:grid;place-items:center;padding:16px;z-index:20}.modal-box{width:min(540px,100%);max-height:90vh;overflow:auto;background:#151922;border:1px solid #3a3b3d;border-radius:18px;padding:22px;box-shadow:0 20px 80px #000b}.modal-head{display:flex;justify-content:space-between;align-items:center}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.form-grid .full{grid-column:1/-1}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.notice{border:1px solid #594a2c;background:#282216;color:#e9d39d;padding:12px;border-radius:12px;font-size:12px;line-height:1.5}.danger-note{border-color:#633a40;background:#29181c;color:#ffb5b5}.device{display:inline-block;border:1px solid var(--line);padding:5px 8px;border-radius:8px;margin:3px;color:var(--muted);font-size:11px}
+@media(max-width:900px){.sidebar{width:68px;padding:18px 8px}.side-brand{padding:6px 5px 24px}.side-brand .brand{font-size:0}.side-brand .brand:after{content:"K";font-size:24px;color:var(--gold)}.side-brand .eyebrow,.nav .navtext,.side-foot{display:none}.nav button{text-align:center;padding:12px 4px}.nav button span{width:auto}main{margin-left:68px;padding:18px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}}
+@media(max-width:560px){main{padding:14px}.top{align-items:flex-start;flex-direction:column}.grid{gap:8px}.card{padding:13px}.stat-value{font-size:21px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div id="login">
+ <div class="login-card">
+  <div class="eyebrow">Panel administrativo</div><div class="brand">KEYTV <span>PRO</span></div>
+  <p class="muted">Gestión comercial de suscripciones y clientes</p>
+  <form id="loginForm">
+   <label>Usuario</label><input id="loginUser" autocomplete="username" value="admin" required>
+   <label>Contraseña</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="Contraseña de demostración" required>
+   <button class="primary" style="width:100%;margin-top:18px">Iniciar sesión</button>
+  </form>
+  <p class="hint">Acceso inicial: <b>admin</b> / <b>KEYTV2026!</b><br>Demo local: cambia estas credenciales antes de usar el sistema con datos reales.</p>
+  <p id="loginError" class="hint" style="color:#ffaaaa"></p>
+ </div>
+</div>
+<div id="app">
+ <aside class="sidebar">
+  <div class="side-brand"><div class="brand">KEYTV <span>PRO</span></div><div class="eyebrow">Premium streaming management</div></div>
+  <nav class="nav">
+   <button data-page="dashboard" class="active"><span>◈</span><b class="navtext">Resumen</b></button>
+   <button data-page="clients"><span>♙</span><b class="navtext">Clientes</b></button>
+   <button data-page="subscriptions"><span>▣</span><b class="navtext">Suscripciones</b></button>
+   <button data-page="payments"><span>＄</span><b class="navtext">Pagos</b></button>
+   <button data-page="catalog"><span>▤</span><b class="navtext">Contenido</b></button>
+   <button data-page="settings"><span>⚙</span><b class="navtext">Configuración</b></button>
+  </nav>
+  <div class="side-foot">KEYTV PRO · México<br>Versión MVP 0.1 · Local</div>
+ </aside>
+ <main>
+  <div class="top"><div><div class="eyebrow">KEYTV PRO / MÉXICO</div><h1 id="pageTitle">Resumen general</h1><div class="muted" id="today"></div></div><div class="actions"><button id="exportBtn">Exportar respaldo</button><button id="logoutBtn">Cerrar sesión</button></div></div>
+  <section id="dashboardPage">
+   <div class="grid">
+    <div class="card"><div class="stat-label">Clientes registrados</div><div class="stat-value" id="statClients">0</div><div class="stat-note">Total en el sistema</div></div>
+    <div class="card"><div class="stat-label">Suscripciones activas</div><div class="stat-value gold" id="statActive">0</div><div class="stat-note">Con fecha vigente</div></div>
+    <div class="card"><div class="stat-label">Ingresos registrados</div><div class="stat-value" id="statRevenue">$0</div><div class="stat-note">Pagos confirmados</div></div>
+    <div class="card"><div class="stat-label">Por cobrar</div><div class="stat-value" id="statPending">$0</div><div class="stat-note">Pagos pendientes</div></div>
+   </div>
+   <div class="two section">
+    <div class="card"><div class="section-head"><h2>Actividad reciente</h2><button onclick="showPage('payments')">Ver pagos</button></div><div id="recentPayments"></div></div>
+    <div class="card"><div class="section-head"><h2>Estado de suscripciones</h2></div><div id="subscriptionSummary"></div><div class="notice" style="margin-top:16px">El MVP administra clientes y cobros. La reproducción de canales se habilitará únicamente después de integrar un proveedor con derechos comerciales verificables.</div></div>
+   </div>
+  </section>
+  <section id="clientsPage" class="hidden">
+   <div class="section-head"><h2>Directorio de clientes</h2><div class="toolbar"><input id="clientSearch" placeholder="Buscar cliente..."><button class="primary" onclick="openClient()">+ Nuevo cliente</button></div></div>
+   <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Contacto</th><th>Alta</th><th>Suscripción</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="clientsTable"></tbody></table></div>
+  </section>
+  <section id="subscriptionsPage" class="hidden">
+   <div class="section-head"><h2>Planes y suscripciones</h2><div class="toolbar"><button onclick="openPlan()">Administrar planes</button><button class="primary" onclick="openSubscription()">+ Nueva suscripción</button></div></div>
+   <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Plan</th><th>Inicio</th><th>Vencimiento</th><th>Precio</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="subsTable"></tbody></table></div>
+  </section>
+  <section id="paymentsPage" class="hidden">
+   <div class="section-head"><h2>Registro de pagos</h2><div class="toolbar"><input id="paymentSearch" placeholder="Buscar pago..."><button class="primary" onclick="openPayment()">+ Registrar pago</button></div></div>
+   <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Concepto</th><th>Método</th><th>Importe</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="paymentsTable"></tbody></table></div>
+  </section>
+  <section id="catalogPage" class="hidden">
+   <div class="section-head"><h2>Catálogo de contenido</h2></div>
+   <div class="notice">Área preparada para integrar el catálogo de un distribuidor autorizado. No agregues señales, películas ni series sin derechos de distribución para México.</div>
+   <div class="grid section">
+    <div class="card"><div class="stat-label">Proveedor</div><div class="stat-value" style="font-size:18px">Pendiente</div><div class="stat-note">API / contrato por integrar</div></div>
+    <div class="card"><div class="stat-label">Canales autorizados</div><div class="stat-value">0</div><div class="stat-note">Se cargarán desde el proveedor</div></div>
+    <div class="card"><div class="stat-label">Estado DRM</div><div class="stat-value" style="font-size:18px">No conectado</div><div class="stat-note">Según requisitos del titular</div></div>
+    <div class="card"><div class="stat-label">Reproductor</div><div class="stat-value" style="font-size:18px">No conectado</div><div class="stat-note">Integración posterior</div></div>
+   </div>
+   <div class="card section"><h2>Datos necesarios para la integración</h2><p class="muted">Cuando tengas proveedor, solicita: documentación API, entorno de pruebas, autorización de distribución en México, esquema de autenticación, DRM, límites de concurrencia, catálogo y soporte técnico.</p><span class="device">HLS / DASH</span><span class="device">OAuth / tokens</span><span class="device">DRM según proveedor</span><span class="device">Android TV</span><span class="device">Smart TV</span></div>
+  </section>
+  <section id="settingsPage" class="hidden">
+   <div class="two">
+    <div class="card"><h2>Identidad comercial</h2><label>Nombre de la marca</label><input value="KEYTV PRO" disabled><label>Mercado</label><input value="México" disabled><label>Moneda</label><input value="MXN - Peso mexicano" disabled><label>Estilo</label><input value="Premium · Negro y dorado" disabled></div>
+    <div class="card"><h2>Planes comerciales</h2><div id="plansList"></div><p class="hint">Precios ilustrativos. Ajusta los planes a los costos y condiciones del proveedor autorizado antes de vender.</p></div>
+   </div>
+   <div class="card section"><h2>Seguridad y almacenamiento</h2><p class="hint">Este prototipo guarda datos en el almacenamiento local del navegador (localStorage). No es una base de datos multiusuario ni un entorno seguro de producción. No almacenes información bancaria sensible ni contraseñas reales de clientes.</p><button class="danger" onclick="if(confirm('¿Borrar todos los datos locales de KEYTV PRO? Esta acción no se puede deshacer.')){localStorage.removeItem(DBKEY);location.reload()}">Restablecer datos de demostración</button></div>
+  </section>
+ </main>
+</div>
+<div id="modalRoot"></div>
+<script>
+const DBKEY='keytv_pro_mvp_v1';
+const money=n=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:2}).format(Number(n)||0);
+const today=()=>new Date().toISOString().slice(0,10);
+const dateFmt=s=>s?new Date(s+'T12:00:00').toLocaleDateString('es-MX'):'—';
+const uid=()=>Math.random().toString(36).slice(2,10).toUpperCase();
+const defaultDB={clients:[],subs:[],payments:[],plans:[{id:'p1',name:'Básico',price:99,months:1,devices:1},{id:'p2',name:'Familiar',price:149,months:1,devices:2},{id:'p3',name:'Premium',price:199,months:1,devices:3}]};
+let db=loadDB(), currentPage='dashboard';
+function loadDB(){try{return JSON.parse(localStorage.getItem(DBKEY))||structuredClone(defaultDB)}catch(e){return structuredClone(defaultDB)}}
+function save(){localStorage.setItem(DBKEY,JSON.stringify(db));render()}
+function activeSub(clientId){return db.subs.filter(s=>s.clientId===clientId&&s.end>=today()).sort((a,b)=>b.end.localeCompare(a.end))[0]}
+function subStatus(s){return s.end<today()?'Vencida':s.status==='cancelled'?'Cancelada':'Activa'}
+function badge(status){let c=status==='Activa'||status==='Confirmado'?'active':status==='Pendiente'?'pending':'expired';return `<span class="pill ${c}">${status}</span>`}
+function showPage(p){currentPage=p;document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));document.getElementById(p+'Page').classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.getElementById('pageTitle').textContent=({dashboard:'Resumen general',clients:'Clientes',subscriptions:'Suscripciones',payments:'Pagos',catalog:'Contenido',settings:'Configuración'})[p];render()}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+document.getElementById('loginForm').onsubmit=e=>{e.preventDefault();if(document.getElementById('loginUser').value==='admin'&&document.getElementById('loginPass').value==='KEYTV2026!'){sessionStorage.setItem('keytv_auth','1');enter()}else document.getElementById('loginError').textContent='Usuario o contraseña incorrectos.'};
+function enter(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';document.getElementById('today').textContent=new Date().toLocaleDateString('es-MX',{dateStyle:'full'});render()}
+document.getElementById('logoutBtn').onclick=()=>{sessionStorage.removeItem('keytv_auth');location.reload()};
+document.getElementById('exportBtn').onclick=()=>{let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='KEYTV-PRO-respaldo-'+today()+'.json';a.click();URL.revokeObjectURL(a.href)};
+function render(){if(!document.getElementById('app')||document.getElementById('app').style.display==='none')return;
+ document.getElementById('statClients').textContent=db.clients.length;
+ document.getElementById('statActive').textContent=db.subs.filter(s=>s.end>=today()&&s.status!=='cancelled').length;
+ document.getElementById('statRevenue').textContent=money(db.payments.filter(p=>p.status==='Confirmado').reduce((a,p)=>a+Number(p.amount),0));
+ document.getElementById('statPending').textContent=money(db.payments.filter(p=>p.status==='Pendiente').reduce((a,p)=>a+Number(p.amount),0));
+ document.getElementById('recentPayments').innerHTML=db.payments.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(p=>`<div class="barline"><span>${esc(clientName(p.clientId))}<br><small class="muted">${dateFmt(p.date)} · ${esc(p.method)}</small></span><span>${money(p.amount)}<br>${badge(p.status)}</span></div>`).join('')||'<div class="empty">Aún no hay pagos registrados.</div>';
+ let active=db.subs.filter(s=>s.end>=today()&&s.status!=='cancelled').length, expired=db.subs.filter(s=>s.end<today()||s.status==='cancelled').length;
+ document.getElementById('subscriptionSummary').innerHTML=`<div class="barline"><span>Activas</span><b class="gold">${active}</b></div><div class="barline"><span>Vencidas / canceladas</span><b>${expired}</b></div><div class="barline"><span>Total</span><b>${db.subs.length}</b></div>`;
+ document.getElementById('clientsTable').innerHTML=db.clients.map(c=>{let s=activeSub(c.id);return `<tr><td><b>${esc(c.name)}</b><br><small class="muted">${esc(c.email||'')}</small></td><td>${esc(c.phone||'—')}</td><td>${dateFmt(c.created)}</td><td>${s?esc(planName(s.planId))+' · '+dateFmt(s.end):'—'}</td><td>${s?badge(subStatus(s)):'<span class="pill">Sin plan</span>'}</td><td><button onclick="editClient('${c.id}')">Editar</button> <button class="danger" onclick="deleteClient('${c.id}')">Eliminar</button></td></tr>`}).join('')||emptyRow(6,'No hay clientes. Registra el primero.');
+ document.getElementById('subsTable').innerHTML=db.subs.map(s=>`<tr><td>${esc(clientName(s.clientId))}</td><td>${esc(planName(s.planId))}</td><td>${dateFmt(s.start)}</td><td>${dateFmt(s.end)}</td><td>${money(s.price)}</td><td>${badge(subStatus(s))}</td><td><button onclick="editSubscription('${s.id}')">Editar</button> <button class="danger" onclick="cancelSubscription('${s.id}')">Cancelar</button></td></tr>`).join('')||emptyRow(7,'No hay suscripciones registradas.');
+ document.getElementById('paymentsTable').innerHTML=db.payments.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(p=>`<tr><td>${dateFmt(p.date)}</td><td>${esc(clientName(p.clientId))}</td><td>${esc(p.concept||'Suscripción')}</td><td>${esc(p.method)}</td><td><b>${money(p.amount)}</b></td><td>${badge(p.status)}</td><td><button onclick="editPayment('${p.id}')">Editar</button> <button class="danger" onclick="deletePayment('${p.id}')">Eliminar</button></td></tr>`).join('')||emptyRow(7,'No hay pagos registrados.');
+ document.getElementById('plansList').innerHTML=db.plans.map(p=>`<div class="barline"><span>${esc(p.name)} · ${p.devices} disp.</span><b>${money(p.price)}</b></div>`).join('');
+}
+function emptyRow(n,msg){return `<tr><td colspan="${n}" class="empty">${msg}</td></tr>`}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function clientName(id){return db.clients.find(c=>c.id===id)?.name||'Cliente eliminado'}
+function planName(id){return db.plans.find(p=>p.id===id)?.name||'Plan eliminado'}
+function modal(title,body){document.getElementById('modalRoot').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="modal-box"><div class="modal-head"><h2>${title}</h2><button onclick="closeModal()">✕</button></div>${body}</div></div>`}
+function closeModal(){document.getElementById('modalRoot').innerHTML=''}
+function openClient(id=''){let c=db.clients.find(x=>x.id===id)||{};modal(id?'Editar cliente':'Nuevo cliente',`<form id="clientForm"><div class="form-grid"><div class="full"><label>Nombre completo *</label><input name="name" required value="${esc(c.name||'')}"></div><div><label>Correo</label><input name="email" type="email" value="${esc(c.email||'')}"></div><div><label>Teléfono</label><input name="phone" value="${esc(c.phone||'')}"></div><div class="full"><label>Notas</label><input name="notes" value="${esc(c.notes||'')}"></div></div><div class="form-actions"><button type="button" onclick="closeModal()">Cancelar</button><button class="primary">Guardar cliente</button></div></form>`);document.getElementById('clientForm').onsubmit=e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));if(id)Object.assign(c,f);else db.clients.push({id:uid(),...f,created:today()});closeModal();save()}}
+function editClient(id){openClient(id)}
+function deleteClient(id){if(!confirm('¿Eliminar cliente? Se conservarán los registros de pagos y suscripciones asociados.'))return;db.clients=db.clients.filter(c=>c.id!==id);save()}
+function openPlan(){modal('Administrar planes',`<form id="planForm"><div class="form-grid"><div><label>Nombre</label><input name="name" required></div><div><label>Precio MXN</label><input name="price" type="number" min="0" step=".01" required></div><div><label>Duración (meses)</label><input name="months" type="number" min="1" value="1" required></div><div><label>Dispositivos</label><input name="devices" type="number" min="1" value="1" required></div></div><div class="form-actions"><button type="button" onclick="closeModal()">Cerrar</button><button class="primary">Agregar plan</button></div></form><div class="section">${db.plans.map(p=>`<div class="barline"><span>${esc(p.name)} · ${money(p.price)} · ${p.months} mes(es) · ${p.devices} disp.</span><button class="danger" onclick="removePlan('${p.id}')">Quitar</button></div>`).join('')}</div>`);document.getElementById('planForm').onsubmit=e=>{e.preventDefault();let f=Object.fromEntries(new FormData(e.target));db.plans.push({id:uid(),name:f.name,price:+f.price,months:+f.months,devices:+f.devices});closeModal();save()}}
+function removePlan(id){db.plans=db.plans.filter(p=>p.id!==id);openPlan();save()}
+function addMonths(date,months){let d=new Date(date+'T12:00:00');d.setMonth(d.getMonth()+months);return d.toISOString().slice(0,10)}
+function openSubscription(id=''){if(!db.clients.length||!db.plans.length){alert('Primero registra un cliente y al menos un plan.');return}let s=db.subs.find(x=>x.id===id)||{},opts=db.clients.map(c=>`<option value="${c.id}" ${s.clientId===c.id?'selected':''}>${esc(c.name)}</option>`).join(''),pOpts=db.plans.map(p=>`<option value="${p.id}" ${s.planId===p.id?'selected':''}>${esc(p.name)} · ${money(p.price)}</option>`).join('');modal(id?'Editar suscripción':'Nueva suscripción',`<form id="subForm"><label>Cliente</label><select name="clientId">${opts}</select><label>Plan</label><select name="planId">${pOpts}</select><div class="form-grid"><div><label>Fecha de inicio</label><input name="start" type="date" value="${s.start||today()}" required></div><div><label>Vencimiento</label><input name="end" type="date" value="${s.end||''}" required></div><div><label>Precio acordado (MXN)</label><input name="price" type="number" min="0" step=".01" value="${s.price??''}" required></div><div><label>Estado</label><select name="status"><option value="active">Activa</option><option value="cancelled" ${s.status==='cancelled'?'selected':''}>Cancelada</option></select></div></div><div class="form-actions"><button type="button" onclick="closeModal()">Cancelar</button><button class="primary">Guardar</button></div></form>`);let form=document.getElementById('subForm'),planSel=form.elements.planId,start=form.elements.start,end=form.elements.end,price=form.elements.price;function fill(){let p=db.plans.find(x=>x.id===planSel.value);if(p){price.value=p.price;end.value=addMonths(start.value,p.months)}}if(!id){planSel.onchange=fill;start.onchange=fill;fill()}form.onsubmit=e=>{e.preventDefault();let f=Object.fromEntries(new FormData(form));f.price=+f.price;if(id)Object.assign(s,f);else db.subs.push({id:uid(),...f});closeModal();save()}}
+function editSubscription(id){openSubscription(id)}
+function cancelSubscription(id){if(confirm('¿Cancelar esta suscripción?')){let s=db.subs.find(x=>x.id===id);s.status='cancelled';save()}}
+function openPayment(id=''){let p=db.payments.find(x=>x.id===id)||{},opts=db.clients.map(c=>`<option value="${c.id}" ${p.clientId===c.id?'selected':''}>${esc(c.name)}</option>`).join('');if(!db.clients.length){alert('Registra un cliente primero.');return}modal(id?'Editar pago':'Registrar pago',`<form id="paymentForm"><label>Cliente</label><select name="clientId">${opts}</select><div class="form-grid"><div><label>Fecha</label><input name="date" type="date" value="${p.date||today()}" required></div><div><label>Importe (MXN)</label><input name="amount" type="number" min="0" step=".01" value="${p.amount??''}" required></div><div><label>Método</label><select name="method"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Otro</option></select></div><div><label>Estado</label><select name="status"><option>Confirmado</option><option ${p.status==='Pendiente'?'selected':''}>Pendiente</option></select></div><div class="full"><label>Concepto</label><input name="concept" value="${esc(p.concept||'Suscripción')}"></div></div><div class="form-actions"><button type="button" onclick="closeModal()">Cancelar</button><button class="primary">Guardar pago</button></div></form>`);let f=document.getElementById('paymentForm');if(p.method)f.elements.method.value=p.method;if(p.status)f.elements.status.value=p.status;f.onsubmit=e=>{e.preventDefault();let d=Object.fromEntries(new FormData(f));d.amount=+d.amount;if(id)Object.assign(p,d);else db.payments.push({id:uid(),...d});closeModal();save()}}
+function editPayment(id){openPayment(id)}
+function deletePayment(id){if(confirm('¿Eliminar este pago?')){db.payments=db.payments.filter(p=>p.id!==id);save()}}
+document.getElementById('clientSearch').oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('#clientsTable tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')};
+document.getElementById('paymentSearch').oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('#paymentsTable tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')};
+if(sessionStorage.getItem('keytv_auth')==='1')enter();
+</script>
+</body></html>
